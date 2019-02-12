@@ -51,6 +51,12 @@ await store.dispatch(countOne())
 Changelog
 ---------
 
+### v0.1.1
+
+* Add keywords in "package.json".
+* Include ".mjs" file in delivery.
+* Include "src" folder in delivery.
+
 ### v0.1.0
 
 * First release.

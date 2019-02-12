@@ -1,7 +1,13 @@
 {
   "name": "@whitetrefoil/vuex-type-helpers",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Some tiny helpers to help vuex work with typescript",
+  "keywords": [
+    "vue",
+    "vuex",
+    "ts",
+    "typescript"
+  ],
   "main": "lib/main",
   "module": "lib/main.mjs",
   "typings": "lib/main.d.ts",
@@ -19,7 +25,9 @@
   "license": "Unlicense",
   "files": [
     "lib/**/*.js",
+    "lib/**/*.mjs",
     "lib/**/*.d.ts",
+    "src",
     "README.md"
   ],
   "engines": {
