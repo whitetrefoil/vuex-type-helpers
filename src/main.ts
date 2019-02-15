@@ -39,5 +39,5 @@ export function addGetter<S, R, D>(
 ): (store: Store<S>) => D {
   tree[name] = (state: S, _g: any, rootState: R) => getterFn(state, rootState)
 
-  return store => store.getters[name]()
+  return store => store.getters[name]
 }

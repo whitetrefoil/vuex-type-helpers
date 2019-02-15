@@ -72,7 +72,9 @@ describe('addGetters', () => {
 
     const store = {
       getters: {
-        IT_SHOULD_WORK: () => getters['IT_SHOULD_WORK'](state, {}, state, {}),
+        get IT_SHOULD_WORK() {
+          return getters['IT_SHOULD_WORK'](state, {}, state, {})
+        },
       },
     } as any as Store<typeof state>
 
@@ -91,7 +93,9 @@ describe('addGetters', () => {
 
     const store = {
       getters: {
-        GET_NEXT_COUNT: () => getters['GET_NEXT_COUNT'](state, {}, state, {}),
+        get GET_NEXT_COUNT() {
+          return getters['GET_NEXT_COUNT'](state, {}, state, {})
+        },
       },
     } as any as Store<typeof state>
 
