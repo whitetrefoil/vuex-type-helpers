@@ -13,8 +13,8 @@ describe('addMutations', () => {
     const itShouldWork = addMutation(
       mutations,
       'IT_SHOULD_WORK',
-      (state, num: number) => {
-        state.count = num
+      (s, num: number) => {
+        s.count = num
       },
     )
 
@@ -43,7 +43,7 @@ describe('addActions', () => {
     const itShouldWork = addAction(
       actions,
       'IT_SHOULD_WORK',
-      async(context, num: number) => {
+      async(ctx, num: number) => {
         _n = num
       },
     )
@@ -68,11 +68,11 @@ describe('addGetters', () => {
 
     const getters: GetterTree<typeof state, typeof state> = {}
 
-    const itShouldWork = addGetter(getters, 'IT_SHOULD_WORK', state => state.count)
+    const itShouldWork = addGetter(getters, 'IT_SHOULD_WORK', s => s.count)
 
     const store = {
       getters: {
-        'IT_SHOULD_WORK': () => getters['IT_SHOULD_WORK'](state, {}, state, {}),
+        IT_SHOULD_WORK: () => getters['IT_SHOULD_WORK'](state, {}, state, {}),
       },
     } as any as Store<typeof state>
 
@@ -87,11 +87,11 @@ describe('addGetters', () => {
 
     const getters: GetterTree<typeof state, typeof state> = {}
 
-    const getNextCount = addGetter(getters, 'GET_NEXT_COUNT', state => (step: number) => state.count + step)
+    const getNextCount = addGetter(getters, 'GET_NEXT_COUNT', s => (step: number) => s.count + step)
 
     const store = {
       getters: {
-        'GET_NEXT_COUNT': () => getters['GET_NEXT_COUNT'](state, {}, state, {}),
+        GET_NEXT_COUNT: () => getters['GET_NEXT_COUNT'](state, {}, state, {}),
       },
     } as any as Store<typeof state>
 
