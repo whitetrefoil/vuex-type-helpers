@@ -43,13 +43,37 @@ export const countOne = addAction(
     },
 )
 
+
+// Getters
+export const getters: GetterTree<IHelloState, IRootState> = {}
+
+export const getCounts = addGetter(
+    getters,
+    'GET_COUNTS',
+    (state, rootState) => state.count,
+)
+
+export const getNextCount = addGetter(
+    getters,
+    'GET_NEXT_COUNT',
+    (state, rootState) => (step: number) => state.count + step,
+)
+
+
 // Somewhere else
 await store.dispatch(countOne())
+console.log(getCounts(store))
+console.log(getNextCount(store)(2))
 ```
 
 
 Changelog
 ---------
+
+### v0.1.2
+
+* Switch to yarn.
+* Add "addGetter".
 
 ### v0.1.1
 
