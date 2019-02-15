@@ -1,5 +1,5 @@
-import { ActionContext, ActionTree, MutationTree } from 'vuex'
-import { addAction, addMutation }                  from '../src/main'
+import { ActionContext, ActionTree, GetterTree, MutationTree, Store } from 'vuex'
+import { addAction, addGetter, addMutation }                          from '../src/main'
 
 jest.resetModules()
 
@@ -58,5 +58,45 @@ describe('addActions', () => {
     (actions as any)['IT_SHOULD_WORK'](context, payload)
 
     expect(_n).toBe(222222)
+  })
+})
+
+describe('addGetters', () => {
+  it('should work', () => {
+
+    const state = { count: 0 }
+
+    const getters: GetterTree<typeof state, typeof state> = {}
+
+    const itShouldWork = addGetter(getters, 'IT_SHOULD_WORK', state => state.count)
+
+    const store = {
+      getters: {
+        'IT_SHOULD_WORK': () => getters['IT_SHOULD_WORK'](state, {}, state, {}),
+      },
+    } as any as Store<typeof state>
+
+    const result = itShouldWork(store)
+
+    expect(result).toBe(0)
+  })
+
+  it('should work as function pattern', () => {
+
+    const state = { count: 0 }
+
+    const getters: GetterTree<typeof state, typeof state> = {}
+
+    const getNextCount = addGetter(getters, 'GET_NEXT_COUNT', state => (step: number) => state.count + step)
+
+    const store = {
+      getters: {
+        'GET_NEXT_COUNT': () => getters['GET_NEXT_COUNT'](state, {}, state, {}),
+      },
+    } as any as Store<typeof state>
+
+    const result = getNextCount(store)(10)
+
+    expect(result).toBe(10)
   })
 })

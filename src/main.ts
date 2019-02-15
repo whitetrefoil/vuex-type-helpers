@@ -1,4 +1,4 @@
-import { ActionContext, ActionTree, MutationTree, Payload } from 'vuex'
+import { ActionContext, ActionTree, GetterTree, MutationTree, Payload, Store } from 'vuex'
 
 
 type PayloadCreator<D> = (data: D) => Payload&{ data: D }
@@ -29,4 +29,15 @@ export function addAction<S, R, D = void>(
     type: name,
     data,
   })
+}
+
+
+export function addGetter<S, R, D>(
+  tree: GetterTree<S, R>,
+  name: string,
+  getterFn: (state: S, rootState: R) => D,
+): (store: Store<S>) => D {
+  tree[name] = (state: S, _g: any, rootState: R) => getterFn(state, rootState)
+
+  return store => store.getters[name]()
 }
