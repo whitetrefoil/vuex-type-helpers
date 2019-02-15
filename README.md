@@ -70,6 +70,10 @@ console.log(getNextCount(store)(2))
 Changelog
 ---------
 
+### v0.1.3
+
+* Fix error caused by wrong getter syntax.
+
 ### v0.1.2
 
 * Switch to yarn.
