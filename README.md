@@ -50,13 +50,13 @@ export const getters: GetterTree<IHelloState, IRootState> = {}
 export const getCounts = addGetter(
     getters,
     'GET_COUNTS',
-    (state, rootState) => state.count,
+    (state/*, getters, rootState, rootGetters*/) => state.count,
 )
 
 export const getNextCount = addGetter(
     getters,
     'GET_NEXT_COUNT',
-    (state, rootState) => (step: number) => state.count + step,
+    (state/*, getters, rootState, rootGetters*/) => (step: number) => state.count + step,
 )
 
 
@@ -69,6 +69,10 @@ console.log(getNextCount(store)(2))
 
 Changelog
 ---------
+
+### v0.2.0
+
+* Modify `addGetter` callback function signature to match original Vuex getter.
 
 ### v0.1.3
 
