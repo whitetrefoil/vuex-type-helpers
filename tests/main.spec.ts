@@ -103,4 +103,28 @@ describe('addGetters', () => {
 
     expect(result).toBe(10)
   })
+
+  it('can call another getter manually (no type check yet)', () => {
+
+    const state = { count: 0 }
+
+    const getters: GetterTree<typeof state, typeof state> = {}
+
+    const getCurrentCount = addGetter(getters, 'GET_CURRENT_COUNT', s => s.count)
+    const getNextCount    = addGetter(getters, 'GET_NEXT_COUNT', (s, g) => g['GET_CURRENT_COUNT'] + 1)
+
+    const storeGetters = {
+      get GET_CURRENT_COUNT() {
+        return getters['GET_CURRENT_COUNT'](state, storeGetters, state, storeGetters)
+      },
+      get GET_NEXT_COUNT() {
+        return getters['GET_NEXT_COUNT'](state, storeGetters, state, storeGetters)
+      },
+    }
+    const store        = { getters: storeGetters } as any as Store<typeof state>
+
+    const result = getNextCount(store)
+
+    expect(result).toBe(1)
+  })
 })

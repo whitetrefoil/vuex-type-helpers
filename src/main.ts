@@ -35,9 +35,9 @@ export function addAction<S, R, D = void>(
 export function addGetter<S, R, D>(
   tree: GetterTree<S, R>,
   name: string,
-  getterFn: (state: S, rootState: R) => D,
+  getterFn: (state: S, getters: any, rootState: R, rootGetters: any) => D,
 ): (store: Store<S>) => D {
-  tree[name] = (state: S, _g: any, rootState: R) => getterFn(state, rootState)
+  tree[name] = getterFn
 
   return store => store.getters[name]
 }
