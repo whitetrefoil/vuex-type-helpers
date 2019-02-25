@@ -36,7 +36,7 @@ export function addGetter<S, R, D>(
   tree: GetterTree<S, R>,
   name: string,
   getterFn: (state: S, getters: any, rootState: R, rootGetters: any) => D,
-): (store: Store<R>|ActionContext<S, R>) => D {
+): (store: Store<R>|ActionContext<any, R>) => D {
   tree[name] = getterFn
 
   return store => (store as ActionContext<S, R>).rootGetters == null
