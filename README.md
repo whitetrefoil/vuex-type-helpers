@@ -83,6 +83,10 @@ const anotherAction = addAction(
 Changelog
 ---------
 
+### v0.3.1
+
+* Fix type declaration of ActionContext.
+
 ### v0.3.0
 
 * Typed getters now can accept an ActionContext.

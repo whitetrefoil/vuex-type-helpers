@@ -1,6 +1,6 @@
 {
   "name": "@whitetrefoil/vuex-type-helpers",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Some tiny helpers to help vuex work with typescript",
   "keywords": [
     "vue",
