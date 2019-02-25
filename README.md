@@ -83,6 +83,10 @@ const anotherAction = addAction(
 Changelog
 ---------
 
+### v0.3.2
+
+* Fix wrong codes in v0.3.1 which cause the type declaration not working.
+
 ### v0.3.1
 
 * Fix type declaration of ActionContext.
