@@ -6,6 +6,10 @@ Some tiny helpers to help vuex work with typescript.
 Usage
 -----
 
+### Important
+
+* **DO NOT** enable namespace mode in Vuex.
+
 ### Simple example
 
 ```ts
@@ -64,11 +68,24 @@ export const getNextCount = addGetter(
 await store.dispatch(countOne())
 console.log(getCounts(store))
 console.log(getNextCount(store)(2))
+
+const anotherAction = addAction(
+    actions,
+    'ANOTHER_ACTION',
+    async(ctx) => {
+        const c = getNextCount(ctx) // typed getter can accept an ActionContext also.
+        commit(setCount(c))
+    },
+)
 ```
 
 
 Changelog
 ---------
+
+### v0.3.0
+
+* Typed getters now can accept an ActionContext.
 
 ### v0.2.0
 
