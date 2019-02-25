@@ -1,5 +1,5 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree, Store } from 'vuex'
-import { addAction, addGetter, addMutation }                          from '../src/main'
+import { addAction, addGetter, addMutation }                                from '../src/main'
 
 jest.resetModules()
 
@@ -126,5 +126,48 @@ describe('addGetters', () => {
     const result = getNextCount(store)
 
     expect(result).toBe(1)
+  })
+
+
+  describe('context in with real Vuex store', () => {
+    const Vue = require('vue')
+    const Vuex = require('vuex')
+
+    beforeAll(() => {
+      Vue.use(Vuex)
+    })
+
+    it('works', () => {
+      interface ISubState {
+        count: number
+      }
+
+      interface IRootState {
+        sub: ISubState
+      }
+
+      const subState: ISubState = {
+        count: 0,
+      }
+
+      const rootState = {} as any as IRootState
+
+      const getters: GetterTree<ISubState, IRootState> = {}
+
+      const getCurrentCount = addGetter(getters, 'GET_CURRENT_COUNT', (s, g, rs) => rs.sub.count)
+
+      const store = new Vuex.Store({
+        modules: {
+          sub: {
+            state: subState,
+            getters,
+          },
+        },
+      })
+
+      const result = getCurrentCount(store)
+
+      expect(result).toBe(0)
+    })
   })
 })
