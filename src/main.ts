@@ -41,5 +41,5 @@ export function addGetter<S, R, D>(
 
   return store => (store as ActionContext<S, R>).rootGetters == null
     ? (store as Store<R>).getters[name]
-    : (store as ActionContext<S, R>).rootGetters[name]
+    : (store as ActionContext<any, R>).rootGetters[name]
 }
