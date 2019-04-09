@@ -66,7 +66,7 @@
     "no-arg"                          : true,
     "no-bitwise"                      : false,
     "no-conditional-assignment"       : true,
-    "no-console"                      : [true, "log", "debug"],
+    "no-console"                      : [true, "log"],
     "no-construct"                    : true,
     "no-debugger"                     : true,
     "no-duplicate-super"              : true,
@@ -156,7 +156,7 @@
     "prefer-method-signature"         : true,
     "prefer-template"                 : true,
     "quotemark"                       : [true, "single", "avoid-escape", "jsx-double"],
-    "semicolon"                       : [true, "never"],
+    "semicolon"                       : [true, "always"],
     "space-before-function-paren"     : [true, "never"],
     "variable-name"                   : [false, "check-format", "allow-leading-underscore"],
     "whitespace"                      : [
@@ -184,7 +184,7 @@
     // v5.4.0 Updates
     "switch-final-break"              : true,
     "use-default-type-parameter"      : false,
-    "binary-expression-operand-order" : true,
+    "binary-expression-operand-order" : false,
     // v5.5.0 Updates
     "no-this-assignment"              : true,
     // v5.6.0 Updates

@@ -1,6 +1,6 @@
 {
   "name": "@whitetrefoil/vuex-type-helpers",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Some tiny helpers to help vuex work with typescript",
   "keywords": [
     "vue",
@@ -8,14 +8,14 @@
     "ts",
     "typescript"
   ],
-  "main": "lib/main",
-  "module": "lib/main.mjs",
-  "typings": "lib/main.d.ts",
+  "main": "lib/index",
+  "module": "lib/index.mjs",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "prepublishOnly": "node scripts/prepublish-checklist.js && npm run build",
     "build": "rimraf lib && tsc && renamer --find js --replace mjs \"lib/**\" && tsc -p tsconfig.common.json",
     "publish": "echo \"Done publishing, don't forget to:\n  1. **dist-tag** your channel in npm.\n  2. bump version in package.json\nGood luck with the publish ;)\"",
-    "test": "tslint . && jest --no-cache"
+    "test": "tslint src/**/*.ts && jest -c jest.config.json --no-cache"
   },
   "repository": {
     "type": "git",
@@ -37,53 +37,20 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
+    "@types/next-tick": "^1.0.0",
     "debug": "^4.1.1",
+    "next-tick": "^1.0.0",
     "vuex": "^3.1.0"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.0",
-    "@types/node": "^10.12.24",
-    "jest": "^24.1.0",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.13.2",
+    "jest": "^24.7.1",
     "renamer": "^1.1.1",
     "rimraf": "^2.6.3",
-    "ts-jest": "^23.10.5",
-    "tslint": "^5.12.1",
-    "typescript": "^3.3.3",
-    "vue": "^2.6.6"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.{ts,js}",
-      "!**/*.d.ts"
-    ],
-    "coveragePathIgnorePatterns": [
-      "/~.*"
-    ],
-    "coverageDirectory": "test_results",
-    "coverageReporters": [
-      "clover",
-      "lcov",
-      "text-summary"
-    ],
-    "globals": {
-      "ts-jest": {
-        "babelConfig": true,
-        "tsConfig": "tests/tsconfig.json"
-      }
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
-    ],
-    "moduleNameMapper": {},
-    "setupFiles": [],
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "preset": "ts-jest",
-    "testMatch": null
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.15.0",
+    "typescript": "^3.4.2",
+    "vue": "^2.6.10"
   }
 }
