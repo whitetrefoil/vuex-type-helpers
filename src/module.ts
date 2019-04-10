@@ -1,5 +1,6 @@
 import { Module, Store } from 'vuex';
 import { TypedBase }     from './base';
+import { ICtor }         from './utils';
 
 export abstract class TypedModule<S, R> extends TypedBase<S, any, R> {
   protected constructor(readonly name: string, state: S) {
@@ -26,4 +27,18 @@ export abstract class TypedModule<S, R> extends TypedBase<S, any, R> {
       this._modules[mn].$register(this._store);
     }
   }
+}
+
+
+export function Module<TBase extends ICtor<TypedModule<any, any>>>() {
+  return (Ctor: TBase) => {
+    // In order to inherit the name of class.
+    const wrapper = {};
+    wrapper[Ctor.name] = class extends Ctor {
+      constructor(...args: any[]) {
+        super(...args);
+      }
+    };
+    return wrapper[Ctor.name];
+  };
 }

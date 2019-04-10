@@ -18,14 +18,14 @@ export interface ITypedModuleTree<F> {
 
 export abstract class TypedBase<S, R, F extends R> {
   protected _store?: Store<F>;
-  protected readonly _mutations: MutationTree<S>   = {};
+  readonly _mutations: MutationTree<S>   = {};
   protected readonly _actions: ActionTree<S, F>    = {};
   protected readonly _getters: GetterTree<S, F>    = {};
   protected readonly _modules: ITypedModuleTree<F> = {};
 
   protected constructor(public readonly state: S) {}
 
-  protected store(): Store<F> {
+  store(): Store<F> {
     if (this._store == null) {
       throw new Error('store not initialized');
     }

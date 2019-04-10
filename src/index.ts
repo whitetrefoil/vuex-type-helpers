@@ -5,5 +5,6 @@ export {
 } from './store';
 
 export {
+  Module,
   TypedModule,
 } from './module';

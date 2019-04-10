@@ -1,6 +1,6 @@
-import Vue                                                   from 'vue';
-import { default as Vuex }                                   from 'vuex';
-import { Store, TypedModule, TypedStore, TypedStoreOptions } from '../src';
+import Vue                                                           from 'vue';
+import { default as Vuex }                                           from 'vuex';
+import { Module, Store, TypedModule, TypedStore, TypedStoreOptions } from '../src';
 
 
 jest.resetModules();
@@ -23,6 +23,7 @@ describe('TypedModule', () => {
 
     const moduleState: IModuleState = { count: 0 };
 
+    @Module()
     class TestModule extends TypedModule<IModuleState, IFullState> {
       constructor(state: IModuleState) {
         super('test', state);
@@ -64,6 +65,7 @@ describe('addMutations', () => {
 
     const moduleState: IModuleState = { count: 0 };
 
+    @Module()
     class TestModule extends TypedModule<IModuleState, IFullState> {
       itShouldWork = this.m('IT_SHOULD_WORK', (s, num: number) => {
         s.count = num;
@@ -107,6 +109,7 @@ describe('addActions', () => {
 
     const moduleState: IModuleState = { count: 0 };
 
+    @Module()
     class TestModule extends TypedModule<IModuleState, IFullState> {
       iAmAMutation = this.m('I_AM_A_MUTATION', (s, num: number) => {
         s.count = num;
@@ -157,6 +160,7 @@ describe('addGetters', () => {
 
     const moduleState: IModuleState = { count: 0 };
 
+    @Module()
     class TestModule extends TypedModule<IModuleState, IFullState> {
       itShouldWork = this.g('IT_SHOULD_WORK', s => s.count);
 
@@ -196,6 +200,7 @@ describe('addGetters', () => {
 
     const moduleState: IModuleState = { count: 0 };
 
+    @Module()
     class TestModule extends TypedModule<IModuleState, IFullState> {
       itShouldWork = this.g('GET_NEXT_COUNT', s => (step: number) => s.count + step);
 
@@ -234,6 +239,7 @@ describe('addGetters', () => {
 
     const moduleState: IModuleState = { count: 0 };
 
+    @Module()
     class TestModule extends TypedModule<IModuleState, IFullState> {
       getCurrentCount = this.g('GET_CURRENT_COUNT', s => s.count);
       getNextCount    = this.g('GET_NEXT_COUNT', s => this.getCurrentCount() + 1);
@@ -273,6 +279,7 @@ describe('addGetters', () => {
 
     const moduleState: IModuleState = { count: 0 };
 
+    @Module()
     class TestModule extends TypedModule<IModuleState, IFullState> {
       getCurrentCount = this.g('GET_CURRENT_COUNT', s => s.count);
       getNextCount    = this.g('GET_NEXT_COUNT', (s, g) => g[this.getCurrentCount.$raw] + 1);

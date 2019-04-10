@@ -1,5 +1,6 @@
 import { Plugin, Store as VuexStore } from 'vuex';
 import { TypedBase }                  from './base';
+import { ICtor }                      from './utils';
 
 
 export interface ITypedStoreOptions<R> {
@@ -47,8 +48,6 @@ export abstract class TypedStore<R, F extends R> extends TypedBase<R, R, F> {
   }
 }
 
-type ICtor<T = {}> = new(...args: any[]) => T;
-
 export function Store<TBase extends ICtor<TypedStore<any, any>>>() {
   return (Ctor: TBase) => {
     // In order to inherit the name of class.
@@ -56,7 +55,6 @@ export function Store<TBase extends ICtor<TypedStore<any, any>>>() {
     wrapper[Ctor.name] = class extends Ctor {
       constructor(...args: any[]) {
         super(...args);
-        // Now we got the `$meta` property in `Model` class.
         this.$bootstrap();
       }
     };
