@@ -1,6 +1,6 @@
-import Vue                                from 'vue';
-import { default as Vuex }               from 'vuex';
-import { ITypedStoreOptions, TypedStore } from '../src/store';
+import Vue                                      from 'vue';
+import { default as Vuex }                      from 'vuex';
+import { Store, TypedStore, TypedStoreOptions } from '../src';
 
 
 jest.resetModules();
@@ -13,10 +13,11 @@ beforeAll(() => {
 
 describe('TypedStore', () => {
   it('should work', () => {
+
+    @Store()
     class TestStore extends TypedStore<{}, {}> {
-      constructor(options: ITypedStoreOptions<{}>) {
+      constructor(options: TypedStoreOptions<{}>) {
         super(options);
-        this.$bootstrap();
       }
     }
 
@@ -34,14 +35,14 @@ describe('addMutations', () => {
 
     const state = { count: 0 };
 
+    @Store()
     class TestStore extends TypedStore<typeof state, typeof state> {
       itShouldWork = this.m('IT_SHOULD_WORK', (s, num: number) => {
         s.count = num;
       });
 
-      constructor(options: ITypedStoreOptions<typeof state>) {
+      constructor(options: TypedStoreOptions<typeof state>) {
         super(options);
-        this.$bootstrap();
       }
     }
 
@@ -59,6 +60,7 @@ describe('addActions', () => {
 
     const state = { count: 0 };
 
+    @Store()
     class TestStore extends TypedStore<typeof state, typeof state> {
       iAmAMutation = this.m('I_AM_A_MUTATION', (s, num: number) => {
         s.count = num;
@@ -69,9 +71,8 @@ describe('addActions', () => {
         return '???';
       });
 
-      constructor(options: ITypedStoreOptions<typeof state>) {
+      constructor(options: TypedStoreOptions<typeof state>) {
         super(options);
-        this.$bootstrap();
       }
     }
 
@@ -90,12 +91,12 @@ describe('addGetters', () => {
 
     const state = { count: 0 };
 
+    @Store()
     class TestStore extends TypedStore<typeof state, typeof state> {
       itShouldWork = this.g('IT_SHOULD_WORK', s => s.count);
 
-      constructor(options: ITypedStoreOptions<typeof state>) {
+      constructor(options: TypedStoreOptions<typeof state>) {
         super(options);
-        this.$bootstrap();
       }
     }
 
@@ -110,12 +111,12 @@ describe('addGetters', () => {
 
     const state = { count: 0 };
 
+    @Store()
     class TestStore extends TypedStore<typeof state, typeof state> {
       itShouldWork = this.g('GET_NEXT_COUNT', s => (step: number) => s.count + step);
 
-      constructor(options: ITypedStoreOptions<typeof state>) {
+      constructor(options: TypedStoreOptions<typeof state>) {
         super(options);
-        this.$bootstrap();
       }
     }
 
@@ -130,13 +131,13 @@ describe('addGetters', () => {
 
     const state = { count: 0 };
 
+    @Store()
     class TestStore extends TypedStore<typeof state, typeof state> {
       getCurrentCount = this.g('GET_CURRENT_COUNT', s => s.count);
       getNextCount    = this.g('GET_NEXT_COUNT', s => this.getCurrentCount() + 1);
 
-      constructor(options: ITypedStoreOptions<typeof state>) {
+      constructor(options: TypedStoreOptions<typeof state>) {
         super(options);
-        this.$bootstrap();
       }
     }
 
@@ -151,13 +152,13 @@ describe('addGetters', () => {
 
     const state = { count: 0 };
 
+    @Store()
     class TestStore extends TypedStore<typeof state, typeof state> {
       getCurrentCount = this.g('GET_CURRENT_COUNT', s => s.count);
       getNextCount    = this.g('GET_NEXT_COUNT', (s, g) => g['GET_CURRENT_COUNT'] + 1);
 
-      constructor(options: ITypedStoreOptions<typeof state>) {
+      constructor(options: TypedStoreOptions<typeof state>) {
         super(options);
-        this.$bootstrap();
       }
     }
 

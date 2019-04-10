@@ -1,4 +1,5 @@
 export {
+  Store,
   TypedStore,
   ITypedStoreOptions as TypedStoreOptions,
 } from './store';
