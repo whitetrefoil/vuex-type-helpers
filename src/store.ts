@@ -1,6 +1,5 @@
 import { Plugin, Store as VuexStore } from 'vuex';
 import { TypedBase }                  from './base';
-import { ICtor }                      from './utils';
 
 
 export interface ITypedStoreOptions<R> {
@@ -41,23 +40,27 @@ export abstract class TypedStore<R, F extends R> extends TypedBase<R, R, F> {
     } as any);
 
     for (const mn of Object.keys(this._modules)) {
-      this._modules[mn].$register(this._store);
+      this._modules[mn].$register(this._store, [...this._names, mn]);
     }
 
     return this;
   }
 }
 
-export function Store<TBase extends ICtor<TypedStore<any, any>>>() {
-  return (Ctor: TBase) => {
+type IStoreConstructor = new(...args: any[]) => TypedStore<any, any>;
+
+export function Store() {
+  return <TBase extends IStoreConstructor>(Ctor: TBase) => {
     // In order to inherit the name of class.
-    const wrapper = {};
-    wrapper[Ctor.name] = class extends Ctor {
+    const Klass = class extends Ctor {
       constructor(...args: any[]) {
         super(...args);
         this.$bootstrap();
       }
     };
-    return wrapper[Ctor.name];
+
+    Object.defineProperty(Klass, 'name', { value: name });
+
+    return Klass as any;
   };
 }

@@ -94,7 +94,8 @@ describe('addMutations', () => {
     store.test.itShouldWork(222);
 
     expect(store.test.state.count).toEqual(222);
-    expect(store.test.itShouldWork.$raw).toEqual('IT_SHOULD_WORK');
+    expect(store.test.itShouldWork.$name).toEqual('IT_SHOULD_WORK');
+    expect(store.test.itShouldWork.$fullName()).toEqual('test/IT_SHOULD_WORK');
   });
 });
 
@@ -144,7 +145,8 @@ describe('addActions', () => {
 
     expect(store.test.state.count).toEqual(222);
     expect(returnValue).toEqual('???');
-    expect(store.test.itShouldWork.$raw).toEqual('IT_SHOULD_WORK');
+    expect(store.test.itShouldWork.$name).toEqual('IT_SHOULD_WORK');
+    expect(store.test.itShouldWork.$fullName()).toEqual('test/IT_SHOULD_WORK');
   });
 });
 
@@ -187,7 +189,8 @@ describe('addGetters', () => {
     const result = store.test.itShouldWork();
 
     expect(result).toBe(0);
-    expect(store.test.itShouldWork.$raw).toEqual('IT_SHOULD_WORK');
+    expect(store.test.itShouldWork.$name).toEqual('IT_SHOULD_WORK');
+    expect(store.test.itShouldWork.$fullName()).toEqual('test/IT_SHOULD_WORK');
   });
 
   it('should work as function pattern', () => {
@@ -282,7 +285,7 @@ describe('addGetters', () => {
     @Module()
     class TestModule extends TypedModule<IModuleState, IFullState> {
       getCurrentCount = this.g('GET_CURRENT_COUNT', s => s.count);
-      getNextCount    = this.g('GET_NEXT_COUNT', (s, g) => g[this.getCurrentCount.$raw] + 1);
+      getNextCount    = this.g('GET_NEXT_COUNT', (s, g) => g[this.getCurrentCount.$name] + 1);
 
       constructor(state: IModuleState) {
         super('test', state);
