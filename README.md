@@ -12,73 +12,7 @@ Usage
 
 ### Simple example
 
-```ts
-// State
-export interface IHelloState {
-    count: number
-}
-
-export const state: IHelloState = {
-    count: 0,
-}
-
-
-// Mutations
-export const mutations: MutationTree<IHelloState> = {}
-
-export const setCount = addMutation(
-    mutations,
-    'SET_COUNT',
-    (state, count: number) => {
-        state.count = count
-    },
-)
-
-
-// Actions
-export const actions: ActionTree<IHelloState, IRootState> = {}
-
-export const countOne = addAction(
-    actions,
-    'COUNT_ONE',
-    async({ state, commit }) => {
-        await doSomethingAsync()
-        commit(setCount(state.count + 1))
-    },
-)
-
-
-// Getters
-export const getters: GetterTree<IHelloState, IRootState> = {}
-
-export const getCounts = addGetter(
-    getters,
-    'GET_COUNTS',
-    (state/*, getters, rootState, rootGetters*/) => state.count,
-)
-
-export const getNextCount = addGetter(
-    getters,
-    'GET_NEXT_COUNT',
-    (state/*, getters, rootState, rootGetters*/) => (step: number) => state.count + step,
-)
-
-
-// Somewhere else
-await store.dispatch(countOne())
-console.log(getCounts(store))
-console.log(getNextCount(store)(2))
-
-const anotherAction = addAction(
-    actions,
-    'ANOTHER_ACTION',
-    async(ctx) => {
-        const c = getNextCount(ctx) // typed getter can accept an ActionContext also.
-        commit(setCount(c))
-    },
-)
-```
-
+**TODO**
 
 Changelog
 ---------
@@ -86,6 +20,10 @@ Changelog
 ### v0.4.0
 
 * Bind store during config (no more `this.$store` in arguments).
+
+#### alpha.4
+
+* Many optimization & workaround.
 
 #### alpha.3
 
