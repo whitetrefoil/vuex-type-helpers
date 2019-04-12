@@ -3,7 +3,7 @@ import { TypedBase }     from './base';
 
 
 export abstract class TypedModule<S, R> extends TypedBase<S, any, R> {
-  protected constructor(readonly name: string, state: S) {
+  protected constructor(state: S) {
     super(state);
   }
 
@@ -13,11 +13,12 @@ export abstract class TypedModule<S, R> extends TypedBase<S, any, R> {
       modules[mn] = this._modules[mn].$getDef();
     }
     return {
-      state    : this.state,
+      namespaced: true,
+      state     : this.state,
       modules,
-      mutations: this._mutations,
-      actions  : this._actions,
-      getters  : this._getters,
+      mutations : this._mutations,
+      actions   : this._actions,
+      getters   : this._getters,
     };
   }
 

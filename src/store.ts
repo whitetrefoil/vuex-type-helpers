@@ -11,6 +11,7 @@ export interface ITypedStoreOptions<R> {
 
 
 export abstract class TypedStore<R, F extends R> extends TypedBase<R, R, F> {
+  protected readonly _names: string[] = [];
   private readonly _plugins: Plugin<R>[];
   private readonly _strict: boolean;
   private readonly _devtools: boolean;

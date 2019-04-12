@@ -26,7 +26,7 @@ describe('TypedModule', () => {
     @Module()
     class TestModule extends TypedModule<IModuleState, IFullState> {
       constructor(state: IModuleState) {
-        super('test', state);
+        super(state);
       }
     }
 
@@ -34,7 +34,7 @@ describe('TypedModule', () => {
 
     @Store()
     class TestStore extends TypedStore<IRootState, IFullState> {
-      test = this.r<IModuleState, TestModule>(testModule);
+      test = this.r<IModuleState, TestModule>('test', testModule);
 
       constructor(options: TypedStoreOptions<{}>) {
         super(options);
@@ -72,7 +72,7 @@ describe('addMutations', () => {
       });
 
       constructor(state: IModuleState) {
-        super('test', state);
+        super(state);
       }
     }
 
@@ -82,7 +82,7 @@ describe('addMutations', () => {
 
     @Store()
     class TestStore extends TypedStore<IRootState, IFullState> {
-      test = this.r<IModuleState, TestModule>(testModule);
+      test = this.r<IModuleState, TestModule>('test', testModule);
 
       constructor(options: TypedStoreOptions<IRootState>) {
         super(options);
@@ -122,7 +122,7 @@ describe('addActions', () => {
       });
 
       constructor(state: IModuleState) {
-        super('test', state);
+        super(state);
       }
     }
 
@@ -132,7 +132,7 @@ describe('addActions', () => {
 
     @Store()
     class TestStore extends TypedStore<IRootState, IFullState> {
-      test = this.r<IModuleState, TestModule>(testModule);
+      test = this.r<IModuleState, TestModule>('test', testModule);
 
       constructor(options: TypedStoreOptions<IRootState>) {
         super(options);
@@ -167,7 +167,7 @@ describe('addGetters', () => {
       itShouldWork = this.g('IT_SHOULD_WORK', s => s.count);
 
       constructor(state: IModuleState) {
-        super('test', state);
+        super(state);
       }
     }
 
@@ -177,7 +177,7 @@ describe('addGetters', () => {
 
     @Store()
     class TestStore extends TypedStore<IRootState, IFullState> {
-      test = this.r<IModuleState, TestModule>(testModule);
+      test = this.r<IModuleState, TestModule>('test', testModule);
 
       constructor(options: TypedStoreOptions<IRootState>) {
         super(options);
@@ -208,7 +208,7 @@ describe('addGetters', () => {
       itShouldWork = this.g('GET_NEXT_COUNT', s => (step: number) => s.count + step);
 
       constructor(state: IModuleState) {
-        super('test', state);
+        super(state);
       }
     }
 
@@ -218,7 +218,7 @@ describe('addGetters', () => {
 
     @Store()
     class TestStore extends TypedStore<IRootState, IFullState> {
-      test = this.r<IModuleState, TestModule>(testModule);
+      test = this.r<IModuleState, TestModule>('test', testModule);
 
       constructor(options: TypedStoreOptions<IRootState>) {
         super(options);
@@ -248,7 +248,7 @@ describe('addGetters', () => {
       getNextCount    = this.g('GET_NEXT_COUNT', s => this.getCurrentCount() + 1);
 
       constructor(state: IModuleState) {
-        super('test', state);
+        super(state);
       }
     }
 
@@ -258,7 +258,7 @@ describe('addGetters', () => {
 
     @Store()
     class TestStore extends TypedStore<IRootState, IFullState> {
-      test = this.r<IModuleState, TestModule>(testModule);
+      test = this.r<IModuleState, TestModule>('test', testModule);
 
       constructor(options: TypedStoreOptions<IRootState>) {
         super(options);
@@ -288,7 +288,7 @@ describe('addGetters', () => {
       getNextCount    = this.g('GET_NEXT_COUNT', (s, g) => g[this.getCurrentCount.$name] + 1);
 
       constructor(state: IModuleState) {
-        super('test', state);
+        super(state);
       }
     }
 
@@ -298,7 +298,7 @@ describe('addGetters', () => {
 
     @Store()
     class TestStore extends TypedStore<IRootState, IFullState> {
-      test = this.r<IModuleState, TestModule>(testModule);
+      test = this.r<IModuleState, TestModule>('test', testModule);
 
       constructor(options: TypedStoreOptions<IRootState>) {
         super(options);
@@ -310,5 +310,67 @@ describe('addGetters', () => {
     const result = store.test.getNextCount();
 
     expect(result).toBe(1);
+  });
+});
+
+
+describe('deepModule', () => {
+  it('should work', () => {
+    interface IState1 {state1: string}
+
+    interface IState2 {state2: string}
+
+    interface IState3 {state3: string}
+
+    type IFullState = IState1&{ store2: IState2&{ store3: IState3 } }
+
+    const state1: IState1 = { state1: 'state1' };
+    const state2: IState2 = { state2: 'state2' };
+    const state3: IState3 = { state3: 'state3' };
+
+    @Module()
+    class Store3 extends TypedModule<IState3, IFullState> {
+      getter3From1 = this.g('GETTER_3_FROM_1', (s, g, rs, rg) => rg['GETTER_1']);
+      mutation3    = this.m('MUTATION_3', state => state.state3 = 'mutated_state3');
+
+      constructor(state: IState3) {
+        super(state);
+      }
+    }
+
+    const store3 = new Store3(state3);
+
+    @Module()
+    class Store2 extends TypedModule<IState2, IFullState> {
+      mutation2 = this.m('MUTATION_2', state => state.state2 = 'mutated_state2');
+      store3    = this.r<IState3, Store3>('store3', store3);
+
+      constructor(state: IState2) {
+        super(state);
+      }
+    }
+
+    const store2 = new Store2(state2);
+
+    @Store()
+    class Store1 extends TypedStore<IState1, IFullState> {
+      getter1 = this.g('GETTER_1', state => state.state1);
+
+      store2 = this.r<IState2, Store2>('store2', store2);
+
+      constructor(options: TypedStoreOptions<IState1>) {
+        super(options);
+      }
+    }
+
+    const store1 = new Store1({ state: state1 });
+
+    expect(store3.state.state3 = 'state3');
+    expect(store3.mutation3.$name).toEqual('MUTATION_3');
+    expect(store3.mutation3.$fullName()).toEqual('store2/store3/MUTATION_3');
+    expect(store2.mutation2.$name).toEqual('MUTATION_2');
+    expect(store2.mutation2.$fullName()).toEqual('store2/MUTATION_2');
+    expect(store1.getter1()).toEqual('state1');
+    expect(store3.getter3From1()).toEqual('state1');
   });
 });
