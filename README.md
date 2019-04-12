@@ -83,6 +83,18 @@ const anotherAction = addAction(
 Changelog
 ---------
 
+### v0.4.0
+
+* Bind store during config (no more `this.$store` in arguments).
+
+#### alpha.2
+
+* Enable namespace to support deeply nested module.
+
+#### alpha.1
+
+* Initial internal test version.
+
 ### v0.3.2
 
 * Fix wrong codes in v0.3.1 which cause the type declaration not working.
