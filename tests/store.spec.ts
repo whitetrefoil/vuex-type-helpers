@@ -14,7 +14,7 @@ beforeAll(() => {
 describe('TypedStore', () => {
   it('should work', () => {
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<{}, {}> {
       constructor(options: TypedStoreOptions<{}>) {
         super(options);
@@ -35,7 +35,7 @@ describe('addMutations', () => {
 
     const state = { count: 0 };
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<typeof state, typeof state> {
       itShouldWork = this.m('IT_SHOULD_WORK', (s, num: number) => {
         s.count = num;
@@ -60,7 +60,7 @@ describe('addActions', () => {
 
     const state = { count: 0 };
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<typeof state, typeof state> {
       iAmAMutation = this.m('I_AM_A_MUTATION', (s, num: number) => {
         s.count = num;
@@ -91,7 +91,7 @@ describe('addGetters', () => {
 
     const state = { count: 0 };
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<typeof state, typeof state> {
       itShouldWork = this.g('IT_SHOULD_WORK', s => s.count);
 
@@ -111,7 +111,7 @@ describe('addGetters', () => {
 
     const state = { count: 0 };
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<typeof state, typeof state> {
       itShouldWork = this.g('GET_NEXT_COUNT', s => (step: number) => s.count + step);
 
@@ -131,7 +131,7 @@ describe('addGetters', () => {
 
     const state = { count: 0 };
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<typeof state, typeof state> {
       getCurrentCount = this.g('GET_CURRENT_COUNT', s => s.count);
       getNextCount    = this.g('GET_NEXT_COUNT', s => this.getCurrentCount() + 1);
@@ -152,7 +152,7 @@ describe('addGetters', () => {
 
     const state = { count: 0 };
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<typeof state, typeof state> {
       getCurrentCount = this.g('GET_CURRENT_COUNT', s => s.count);
       getNextCount    = this.g('GET_NEXT_COUNT', (s, g) => g['GET_CURRENT_COUNT'] + 1);

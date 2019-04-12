@@ -1,5 +1,7 @@
-import { Plugin, Store as VuexStore } from 'vuex';
-import { TypedBase }                  from './base';
+// tslint:disable-next-line:no-implicit-dependencies
+import { VueConstructor } from 'vue';
+import Vuex, { Plugin }   from 'vuex';
+import { TypedBase }      from './base';
 
 
 export interface ITypedStoreOptions<R> {
@@ -23,13 +25,13 @@ export abstract class TypedStore<R, F extends R> extends TypedBase<R, R, F> {
     this._devtools = options.devtools || process.env.NODE_ENV === 'development';
   }
 
-  protected $bootstrap(): this {
+  protected $bootstrap(Vue: VueConstructor): this {
     const modules = {};
     for (const mn of Object.keys(this._modules)) {
       modules[mn] = this._modules[mn].$getDef();
     }
 
-    this._store = new VuexStore<any>({
+    const fullDef: any = {
       state    : this.state,
       modules,
       mutations: this._mutations,
@@ -38,7 +40,10 @@ export abstract class TypedStore<R, F extends R> extends TypedBase<R, R, F> {
       plugins  : this._plugins,
       strict   : this._strict,
       devtools : this._devtools,
-    } as any);
+    };
+
+    Vue.use(Vuex);
+    this._store = new Vuex.Store<any>(fullDef);
 
     for (const mn of Object.keys(this._modules)) {
       this._modules[mn].$register(this._store, [...this._names, mn]);
@@ -50,13 +55,13 @@ export abstract class TypedStore<R, F extends R> extends TypedBase<R, R, F> {
 
 type IStoreConstructor = new(...args: any[]) => TypedStore<any, any>;
 
-export function Store() {
+export function Store(Vue: VueConstructor) {
   return <TBase extends IStoreConstructor>(Ctor: TBase) => {
     // In order to inherit the name of class.
     const Klass = class extends Ctor {
       constructor(...args: any[]) {
         super(...args);
-        this.$bootstrap();
+        this.$bootstrap(Vue);
       }
     };
 

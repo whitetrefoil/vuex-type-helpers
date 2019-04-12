@@ -6,10 +6,10 @@ import { ActionContext, ActionTree, GetterTree, MutationTree, Store } from 'vuex
 import { TypedModule }                                                from './module';
 
 
-export interface IPayload<N, D> {
+export type IPayload<N, D> = D extends void ? undefined : {
   type: N;
   data: D;
-}
+};
 
 export interface ITypedModuleTree<F> {
   [name: string]: TypedModule<any, F>;
@@ -50,7 +50,8 @@ export abstract class TypedBase<S, R, F extends R> {
     name: string,
     mutation: (state: S, data: D) => void,
   ): IWithName<(data: D) => void> {
-    this._mutations[name] = (state: S, payload: IPayload<typeof name, D>) => mutation(this.state, payload.data);
+    this._mutations[name] = (state: S, payload: IPayload<typeof name, D>) =>
+      payload == null ? (mutation as any)(state) : mutation(state, payload.data);
 
     const m = (data: D) => this.store().commit({
       type: this.prefix(name),
@@ -67,10 +68,8 @@ export abstract class TypedBase<S, R, F extends R> {
     name: string,
     action: (context: ActionContext<S, R>, data: D) => Promise<RTN>,
   ): IWithName<(data: D) => Promise<RTN>> {
-    this._actions[name] = (context: ActionContext<S, R>, payload: { type: typeof name; data: D }) => action(
-      context,
-      payload.data,
-    );
+    this._actions[name] = (context: ActionContext<S, R>, payload: IPayload<typeof name, D>) =>
+      payload == null ? (action as any)(context) : action(context, payload.data);
 
     const a = async(data: D): Promise<RTN> => this.store().dispatch({
       type: this.prefix(name),

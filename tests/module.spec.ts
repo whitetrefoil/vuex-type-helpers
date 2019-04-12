@@ -32,7 +32,7 @@ describe('TypedModule', () => {
 
     const testModule = new TestModule(moduleState);
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<IRootState, IFullState> {
       test = this.r<IModuleState, TestModule>('test', testModule);
 
@@ -80,7 +80,7 @@ describe('addMutations', () => {
 
     const rootState: IRootState = {};
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<IRootState, IFullState> {
       test = this.r<IModuleState, TestModule>('test', testModule);
 
@@ -130,7 +130,7 @@ describe('addActions', () => {
 
     const rootState: IRootState = {};
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<IRootState, IFullState> {
       test = this.r<IModuleState, TestModule>('test', testModule);
 
@@ -175,7 +175,7 @@ describe('addGetters', () => {
 
     const rootState: IRootState = {};
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<IRootState, IFullState> {
       test = this.r<IModuleState, TestModule>('test', testModule);
 
@@ -216,7 +216,7 @@ describe('addGetters', () => {
 
     const rootState: IRootState = {};
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<IRootState, IFullState> {
       test = this.r<IModuleState, TestModule>('test', testModule);
 
@@ -256,7 +256,7 @@ describe('addGetters', () => {
 
     const rootState: IRootState = {};
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<IRootState, IFullState> {
       test = this.r<IModuleState, TestModule>('test', testModule);
 
@@ -296,7 +296,7 @@ describe('addGetters', () => {
 
     const rootState: IRootState = {};
 
-    @Store()
+    @Store(Vue)
     class TestStore extends TypedStore<IRootState, IFullState> {
       test = this.r<IModuleState, TestModule>('test', testModule);
 
@@ -352,7 +352,7 @@ describe('deepModule', () => {
 
     const store2 = new Store2(state2);
 
-    @Store()
+    @Store(Vue)
     class Store1 extends TypedStore<IState1, IFullState> {
       getter1 = this.g('GETTER_1', state => state.state1);
 
