@@ -87,6 +87,10 @@ Changelog
 
 * Bind store during config (no more `this.$store` in arguments).
 
+#### alpha.3
+
+* Avoid using `.mjs` due to its wired behavior in Webpack.
+
 #### alpha.2
 
 * Enable namespace to support deeply nested module.
