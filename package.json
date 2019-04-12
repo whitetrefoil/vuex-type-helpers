@@ -9,7 +9,7 @@
     "typescript"
   ],
   "main": "lib/index",
-  "module": "lib/index.mjs",
+  "module": "lib/index.es6",
   "typings": "lib/index.d.ts",
   "scripts": {
     "prepublishOnly": "node scripts/prepublish-checklist.js && npm run build",
