@@ -13,7 +13,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "prepublishOnly": "node scripts/prepublish-checklist.js && npm run build",
-    "build": "rimraf lib && tsc && renamer --find js --replace mjs \"lib/**\" && tsc -p tsconfig.common.json",
+    "build": "rimraf lib && tsc && renamer --find js --replace es6 \"lib/**\" && tsc -p tsconfig.common.json",
     "publish": "echo \"Done publishing, don't forget to:\n  1. **dist-tag** your channel in npm.\n  2. bump version in package.json\nGood luck with the publish ;)\"",
     "test": "tslint src/**/*.ts && jest -c jest.config.json --no-cache"
   },
