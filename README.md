@@ -17,6 +17,10 @@ Usage
 Changelog
 ---------
 
+### v0.5.0-alpha.1
+
+* Try a simpler new design (more like v0.3).
+
 ### v0.4.0
 
 * Bind store during config (no more `this.$store` in arguments).
