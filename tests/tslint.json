@@ -1,5 +1,5 @@
 {
-  "extends": ["../tsconfig.json"],
+  "extends": ["../tslint.json"],
   "rules"  : {
     "no-implicit-dependencies": false
   }
