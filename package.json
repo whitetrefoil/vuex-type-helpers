@@ -8,9 +8,9 @@
     "ts",
     "typescript"
   ],
-  "main": "lib/cjs/index",
-  "module": "lib/esm/index",
-  "typings": "lib/esm/index.d.ts",
+  "main": "lib/cjs/main",
+  "module": "lib/esm/main",
+  "typings": "lib/esm/main.d.ts",
   "scripts": {
     "prepublishOnly": "node scripts/prepublish-checklist.js && npm run build",
     "build": "rimraf lib && tsc && tsc -p tsconfig.common.json",
