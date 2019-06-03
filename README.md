@@ -17,6 +17,10 @@ Usage
 Changelog
 ---------
 
+### v0.5.0-alpha.2
+
+* Fix package entry in package.json.
+
 ### v0.5.0-alpha.1
 
 * Try a simpler new design (more like v0.3).
