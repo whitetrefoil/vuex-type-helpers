@@ -17,6 +17,10 @@ Usage
 Changelog
 ---------
 
+### v0.5.0-alpha.3
+
+* Export interfaces.
+
 ### v0.5.0-alpha.2
 
 * Fix package entry in package.json.
