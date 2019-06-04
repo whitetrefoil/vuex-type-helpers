@@ -1,39 +1,39 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree, Store } from 'vuex';
 
 
-interface StandardPayload<D> {
+export interface StandardPayload<D> {
   type: string;
   data: D;
 }
 
-interface PayloadCreator<D = void> {
+export interface PayloadCreator<D = void> {
   (data: D): StandardPayload<D>;
 }
 
 
-interface VuexMutation<S, D> {
+export interface VuexMutation<S, D> {
   (state: S, payload: StandardPayload<D>): void;
 }
 
-interface BoundMutation<D> {
+export interface BoundMutation<D> {
   key: string;
   (data: D): void;
 }
 
-interface VuexAction<S, R, D> {
+export interface VuexAction<S, R, D> {
   (ctx: ActionContext<S, R>, payload: StandardPayload<D>): Promise<void>;
 }
 
-interface BoundAction<D> {
+export interface BoundAction<D> {
   key: string;
   (data: D): Promise<void>;
 }
 
-interface VuexGetter<S, R, D> {
+export interface VuexGetter<S, R, D> {
   (state: S, getters: any, rootState: R, rootGetters: any): D;
 }
 
-interface BoundGetter<D> {
+export interface BoundGetter<D> {
   key: string;
   (): D;
 }
