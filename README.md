@@ -17,6 +17,10 @@ Usage
 Changelog
 ---------
 
+### v0.6.0-alpha.1
+
+* Enable namespace.
+
 ### v0.5.0-alpha.3
 
 * Export interfaces.
