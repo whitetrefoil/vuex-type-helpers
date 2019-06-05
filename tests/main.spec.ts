@@ -29,6 +29,7 @@ describe('addMutations', () => {
 
     expect(store.state.ut.count).toBe(222);
     expect(itShouldWork.key).toBe('IT_SHOULD_WORK');
+    expect(itShouldWork.fullKey).toBe('ut/IT_SHOULD_WORK');
   });
 
   it('should allow empty mutations', () => {
@@ -53,6 +54,7 @@ describe('addMutations', () => {
 
     expect(store.state.ut.count).toBe(1);
     expect(itShouldWork.key).toBe('IT_SHOULD_WORK');
+    expect(itShouldWork.fullKey).toBe('ut/IT_SHOULD_WORK');
   });
 });
 
@@ -81,6 +83,7 @@ describe('addActions', () => {
 
     expect(store.state.ut.count).toBe(333);
     expect(utAction.key).toBe('UT_ACTION');
+    expect(utAction.fullKey).toBe('ut/UT_ACTION');
   });
 
   it('should allow empty actions', async() => {
@@ -107,6 +110,7 @@ describe('addActions', () => {
 
     expect(store.state.ut.count).toBe(1);
     expect(utAction.key).toBe('UT_ACTION');
+    expect(utAction.fullKey).toBe('ut/UT_ACTION');
   });
 });
 
@@ -133,6 +137,7 @@ describe('addGetters', () => {
     expect(itShouldWork()).toBe(100);
     expect(itShouldWork()).toBe(100);
     expect(itShouldWork.key).toBe('IT_SHOULD_WORK');
+    expect(itShouldWork.fullKey).toBe('ut/IT_SHOULD_WORK');
   });
 
   it('should work as a function', () => {
@@ -157,5 +162,6 @@ describe('addGetters', () => {
     expect(itShouldWork()(200)).toBe(200);
     expect(itShouldWork()(100)).toBe(100);
     expect(itShouldWork.key).toBe('IT_SHOULD_WORK');
+    expect(itShouldWork.fullKey).toBe('ut/IT_SHOULD_WORK');
   });
 });

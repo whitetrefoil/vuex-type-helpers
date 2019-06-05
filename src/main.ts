@@ -17,6 +17,7 @@ export interface VuexMutation<S, D> {
 
 export interface BoundMutation<D> {
   key: string;
+  fullKey: string;
   (data: D): void;
 }
 
@@ -26,6 +27,7 @@ export interface VuexAction<S, R, D> {
 
 export interface BoundAction<D> {
   key: string;
+  fullKey: string;
   (data: D): Promise<void>;
 }
 
@@ -35,6 +37,7 @@ export interface VuexGetter<S, R, D> {
 
 export interface BoundGetter<D> {
   key: string;
+  fullKey: string;
   (): D;
 }
 
@@ -51,56 +54,63 @@ export class TypedModule<S, R> {
 
   mutation<D = void>(key: string, vfn: VuexMutation<S, D>): BoundMutation<D> {
     this.mutationTree[key] = vfn;
+    const fullKey          = `${this.name}/${key}`;
 
     const fn = (data: D) => {
       if (this.bound !== true) {
         console.warn('Not bind to a store yet!');
       }
       return this.store.commit({
-        type: key,
+        type: fullKey,
         data,
       });
     };
 
-    fn.key = key;
+    fn.key     = key;
+    fn.fullKey = fullKey;
 
     return fn;
   }
 
   action<D = void>(key: string, vfn: VuexAction<S, R, D>): BoundAction<D> {
     this.actionTree[key] = vfn;
+    const fullKey        = `${this.name}/${key}`;
 
     const fn = (data: D) => {
       if (this.bound !== true) {
         console.warn('Not bind to a store yet!');
       }
       return this.store.dispatch({
-        type: key,
+        type: fullKey,
         data,
       });
     };
 
-    fn.key = key;
+    fn.key     = key;
+    fn.fullKey = fullKey;
 
     return fn;
   }
 
   getter<D>(key: string, vfn: VuexGetter<S, R, D>): BoundGetter<D> {
     this.getterTree[key] = vfn;
+    const fullKey        = `${this.name}/${key}`;
 
-    const fn = () => this.store.getters[key];
+    const fn = () => this.store.getters[fullKey];
 
-    fn.key = key;
+    fn.key     = key;
+    fn.fullKey = fullKey;
 
     return fn;
   }
 
   finish() {
     this.store.registerModule(this.name, {
-      state    : this.state,
-      mutations: this.mutationTree,
-      actions  : this.actionTree,
-      getters  : this.getterTree,
+      namespaced: true,
+      state     : this.state,
+      mutations : this.mutationTree,
+      actions   : this.actionTree,
+      getters   : this.getterTree,
     });
     this.bound = true;
   }
