@@ -1,3 +1,4 @@
+import { mount }                  from '@vue/test-utils';
 import Vue                        from 'vue';
 import { default as Vuex, Store } from 'vuex';
 import TypedModule                from '../src/main';
@@ -130,12 +131,22 @@ describe('addGetters', () => {
     const module = new TypedModule(store, 'ut', state);
 
     const itShouldWork = module.getter<number>('IT_SHOULD_WORK', s => s.count + 100);
+    const mutateIt     = module.mutation<void>('MUTATE_IT', s => s.count += 100);
 
     module.finish();
 
-    expect(itShouldWork()).toBe(100);
-    expect(itShouldWork()).toBe(100);
-    expect(itShouldWork()).toBe(100);
+    const wrapper = mount({
+      template: '<div>{{output}}</div>',
+      computed: {
+        output() { return itShouldWork(); },
+      },
+    });
+
+    expect(wrapper.html()).toBe('<div>100</div>');
+    expect(wrapper.html()).toBe('<div>100</div>');
+    mutateIt();
+    expect(wrapper.html()).toBe('<div>200</div>');
+    expect(wrapper.html()).toBe('<div>200</div>');
     expect(itShouldWork.key).toBe('IT_SHOULD_WORK');
     expect(itShouldWork.fullKey).toBe('ut/IT_SHOULD_WORK');
   });
@@ -155,12 +166,23 @@ describe('addGetters', () => {
     const module = new TypedModule(store, 'ut', state);
 
     const itShouldWork = module.getter<(add: number) => number>('IT_SHOULD_WORK', s => add => s.count + add);
+    const mutateIt     = module.mutation<void>('MUTATE_IT', s => s.count += 100);
 
     module.finish();
 
-    expect(itShouldWork()(100)).toBe(100);
-    expect(itShouldWork()(200)).toBe(200);
-    expect(itShouldWork()(100)).toBe(100);
+    const wrapper = mount({
+      template: '<div>{{output100}}|{{output200}}</div>',
+      computed: {
+        output100() { return itShouldWork()(100); },
+        output200() { return itShouldWork()(200); },
+      },
+    });
+
+    expect(wrapper.html()).toBe('<div>100|200</div>');
+    expect(wrapper.html()).toBe('<div>100|200</div>');
+    mutateIt();
+    expect(wrapper.html()).toBe('<div>200|300</div>');
+    expect(wrapper.html()).toBe('<div>200|300</div>');
     expect(itShouldWork.key).toBe('IT_SHOULD_WORK');
     expect(itShouldWork.fullKey).toBe('ut/IT_SHOULD_WORK');
   });

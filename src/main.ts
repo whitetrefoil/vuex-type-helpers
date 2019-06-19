@@ -1,4 +1,4 @@
-import { ActionContext, ActionTree, GetterTree, MutationTree, Store } from 'vuex';
+import { ActionContext, ActionTree, GetterTree, Module, MutationTree, Store } from 'vuex';
 
 
 export interface StandardPayload<D> {
@@ -51,6 +51,16 @@ export class TypedModule<S, R> {
   protected readonly getterTree: GetterTree<S, R>  = {};
 
   constructor(public store: Store<R>, public readonly name: string, protected readonly state: S) {}
+
+  get def(): Module<S, R> {
+    return {
+      namespaced: true,
+      state     : this.state,
+      mutations : this.mutationTree,
+      actions   : this.actionTree,
+      getters   : this.getterTree,
+    };
+  }
 
   mutation<D = void>(key: string, vfn: VuexMutation<S, D>): BoundMutation<D> {
     this.mutationTree[key] = vfn;
@@ -105,13 +115,7 @@ export class TypedModule<S, R> {
   }
 
   finish() {
-    this.store.registerModule(this.name, {
-      namespaced: true,
-      state     : this.state,
-      mutations : this.mutationTree,
-      actions   : this.actionTree,
-      getters   : this.getterTree,
-    });
+    this.store.registerModule(this.name, this.def);
     this.bound = true;
   }
 }
