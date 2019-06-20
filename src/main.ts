@@ -41,6 +41,12 @@ export interface BoundGetter<D> {
   (): D;
 }
 
+export interface BoundMethodGetter<D, P> {
+  key: string;
+  fullKey: string;
+  (arg: P): D;
+}
+
 
 export class TypedModule<S, R> {
 
@@ -107,6 +113,18 @@ export class TypedModule<S, R> {
     const fullKey        = `${this.name}/${key}`;
 
     const fn = () => this.store.getters[fullKey];
+
+    fn.key     = key;
+    fn.fullKey = fullKey;
+
+    return fn;
+  }
+
+  mGetter<D, P>(key: string, vfn: VuexGetter<S, R, (arg: P) => D>): BoundMethodGetter<D, P> {
+    this.getterTree[key] = vfn;
+    const fullKey        = `${this.name}/${key}`;
+
+    const fn = (arg: P) => this.store.getters[fullKey](arg);
 
     fn.key     = key;
     fn.fullKey = fullKey;

@@ -7,7 +7,7 @@ jest.resetModules();
 
 Vue.use(Vuex);
 
-describe('addMutations', () => {
+describe('mutation()', () => {
   it('should work', () => {
     interface S {
       count: number;
@@ -59,7 +59,7 @@ describe('addMutations', () => {
   });
 });
 
-describe('addActions', () => {
+describe('action()', () => {
   it('should work', async() => {
     interface S {
       count: number;
@@ -115,7 +115,7 @@ describe('addActions', () => {
   });
 });
 
-describe('addGetters', () => {
+describe('getter()', () => {
   it('should work', () => {
     interface S {
       count: number;
@@ -175,6 +175,44 @@ describe('addGetters', () => {
       computed: {
         output100() { return itShouldWork()(100); },
         output200() { return itShouldWork()(200); },
+      },
+    });
+
+    expect(wrapper.html()).toBe('<div>100|200</div>');
+    expect(wrapper.html()).toBe('<div>100|200</div>');
+    mutateIt();
+    expect(wrapper.html()).toBe('<div>200|300</div>');
+    expect(wrapper.html()).toBe('<div>200|300</div>');
+    expect(itShouldWork.key).toBe('IT_SHOULD_WORK');
+    expect(itShouldWork.fullKey).toBe('ut/IT_SHOULD_WORK');
+  });
+});
+
+describe('mGetter()', () => {
+  it('should work', () => {
+    interface S {
+      count: number;
+    }
+
+    interface R {
+      ut: S;
+    }
+
+    const state: S = { count: 0 };
+    const store    = new Store<R>({});
+
+    const module = new TypedModule(store, 'ut', state);
+
+    const itShouldWork = module.mGetter<number, number>('IT_SHOULD_WORK', s => add => s.count + add);
+    const mutateIt     = module.mutation<void>('MUTATE_IT', s => s.count += 100);
+
+    module.finish();
+
+    const wrapper = mount({
+      template: '<div>{{output100}}|{{output200}}</div>',
+      computed: {
+        output100() { return itShouldWork(100); },
+        output200() { return itShouldWork(200); },
       },
     });
 
