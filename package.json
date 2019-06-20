@@ -46,6 +46,7 @@
     "@types/jest": "^24.0.11",
     "@types/node": "^11.13.2",
     "@vue/test-utils": "^1.0.0-beta.29",
+    "av-ts": "^0.10.0",
     "jest": "^24.7.1",
     "renamer": "^1.1.1",
     "rimraf": "^2.6.3",

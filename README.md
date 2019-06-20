@@ -6,13 +6,9 @@ Some tiny helpers to help vuex work with typescript.
 Usage
 -----
 
-### Important
-
-* **DO NOT** enable namespace mode in Vuex.
-
 ### Simple example
 
-**TODO**
+See `"/expamles"` dir.
 
 Changelog
 ---------
