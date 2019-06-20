@@ -13,6 +13,10 @@ See `"/expamles"` dir.
 Changelog
 ---------
 
+### v0.7.0-beta.1
+
+* Add a "mGetter" method to shorten method style getters.
+
 ### v0.6.0-alpha.1
 
 * Enable namespace.
