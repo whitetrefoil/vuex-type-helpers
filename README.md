@@ -3,12 +3,46 @@
 
 Some tiny helpers to help vuex work with typescript.
 
+It wraps the module definition with a helper class.
+
+Using the methods of that class to define getters/mutations/actions.
+
+Those methods will return type-checked functions
+which proxy calling to the real store.
+
+Those functions will also have two additional property:
+`key` (w/ module name) & `fullKey` (w/o module name),
+which are the actual key registered on the store.
+
+Those keys (mostly `fullKey`) can be useful
+if you want to use Vuex's helpers (e.g. `mapGetters`, `rootGetters`, etc.).
+
 Usage
 -----
+
+### Install
+
+```
+npm i vue vuex @whitetrefoil/vuex-type-helpers
+```
+OR
+```
+yarn add vue vuex @whitetrefoil/vuex-type-helpers
+```
+Then
+```ts
+import TypedModule from '@whitetrefoil/vuex-type-helpers'
+```
 
 ### Simple example
 
 See `"/expamles"` dir.
+
+### API
+
+```
+class TypedModule
+```
 
 Changelog
 ---------

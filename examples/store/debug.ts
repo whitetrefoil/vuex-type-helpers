@@ -8,7 +8,12 @@ export namespace DebugStore {
     message: string;
   }
 
-  const state: State = {
+  // The state object is actually reactive,
+  // can be used directly.
+  // But be sure **NOT** to modify it!!!
+  //
+  // If feels no so confidential, just un-export it and use getters.
+  export const state: State = {
     count  : 0,
     message: 'initialized',
   };
@@ -42,13 +47,12 @@ export namespace DebugStore {
   // Action, arg can also be `void` just like mutations.
   export const countAfterSeconds = m.action<number>(
     'COUNT_AFTER_SECONDS',
-    async(ctx, { data }) => {
-      return new Promise(resolve => {
+    async(ctx, { data }) =>
+      new Promise(resolve => {
         setTimeout(() => {
           countOne();
         }, data);
-      });
-    },
+      }),
   );
 
   // `.finish()` must be called at the end.

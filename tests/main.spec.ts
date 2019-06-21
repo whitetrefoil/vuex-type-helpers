@@ -225,3 +225,38 @@ describe('mGetter()', () => {
     expect(itShouldWork.fullKey).toBe('ut/IT_SHOULD_WORK');
   });
 });
+
+describe('if use state directly?', () => {
+  it('should work or not?', () => {
+    interface S {
+      count: number;
+    }
+
+    interface R {
+      ut: S;
+    }
+
+    const state: S = { count: 100 };
+    const store    = new Store<R>({});
+
+    const module   = new TypedModule(store, 'ut', state);
+    const mutateIt = module.mutation<void>('MUTATE_IT', s => s.count += 100);
+    module.finish();
+
+    const wrapper = mount({
+      template: '<div>{{computed}}|{{method()}}</div>',
+      computed: {
+        computed() { return state.count; },
+      },
+      methods : {
+        method() { return state.count; },
+      },
+    });
+
+    expect(wrapper.html()).toBe('<div>100|100</div>');
+    expect(wrapper.html()).toBe('<div>100|100</div>');
+    mutateIt();
+    expect(wrapper.html()).toBe('<div>200|200</div>');
+    expect(wrapper.html()).toBe('<div>200|200</div>');
+  });
+});

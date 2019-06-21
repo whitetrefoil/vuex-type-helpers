@@ -32,6 +32,13 @@ export default class App extends Vue {
     return DebugStore.getInitialLetters(4);
   }
 
+  get useStateDirectly(): string {
+    // The state object is actually reactive,
+    // can be used directly.
+    // But be sure **NOT** to modify it!!!
+    return DebugStore.state.message;
+  }
+
   @Lifecycle
   async mounted() {
     await DebugStore.countAfterSeconds(1000);

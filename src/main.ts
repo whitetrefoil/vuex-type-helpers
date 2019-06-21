@@ -56,7 +56,7 @@ export class TypedModule<S, R> {
   protected readonly actionTree: ActionTree<S, R>  = {};
   protected readonly getterTree: GetterTree<S, R>  = {};
 
-  constructor(public store: Store<R>, public readonly name: string, protected readonly state: S) {}
+  constructor(public store: Store<R>, public readonly name: string, public readonly state: S) {}
 
   get def(): Module<S, R> {
     return {
