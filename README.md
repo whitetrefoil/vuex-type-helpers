@@ -47,6 +47,10 @@ class TypedModule
 Changelog
 ---------
 
+### v0.7.0-beta.2
+
+* Set `TypeModule.prototype.state` to public (from protected).
+
 ### v0.7.0-beta.1
 
 * Add a "mGetter" method to shorten method style getters.
