@@ -47,6 +47,10 @@ class TypedModule
 Changelog
 ---------
 
+### v0.8.0-beta.1
+
+* Support nested modules.
+
 ### v0.7.0-beta.2
 
 * Set `TypeModule.prototype.state` to public (from protected).
