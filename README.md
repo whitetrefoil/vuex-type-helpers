@@ -47,6 +47,11 @@ class TypedModule
 Changelog
 ---------
 
+### v0.8.0-beta.2
+
+* Allow return type of actions.
+---------
+
 ### v0.8.0-beta.1
 
 * Support nested modules.
