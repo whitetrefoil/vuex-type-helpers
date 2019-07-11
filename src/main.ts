@@ -21,14 +21,14 @@ export interface BoundMutation<D> {
   (data: D): void;
 }
 
-export interface VuexAction<S, R, D> {
-  (ctx: ActionContext<S, R>, payload: StandardPayload<D>): Promise<void>;
+export interface VuexAction<S, R, D, RTN> {
+  (ctx: ActionContext<S, R>, payload: StandardPayload<D>): RTN|Promise<RTN>;
 }
 
-export interface BoundAction<D> {
+export interface BoundAction<D, RTN> {
   key: string;
   fullKey: string;
-  (data: D): Promise<void>;
+  (data: D): Promise<RTN>;
 }
 
 export interface VuexGetter<S, R, D> {
@@ -101,11 +101,11 @@ export class TypedModule<S, R> {
     return fn;
   }
 
-  action<D = void>(key: string, vfn: VuexAction<S, R, D>): BoundAction<D> {
+  action<D = void, RTN = any>(key: string, vfn: VuexAction<S, R, D, RTN>): BoundAction<D, RTN> {
     this.actionTree[key] = vfn;
     const fullKey        = `${this.fullName}/${key}`;
 
-    const fn = (data: D) => {
+    const fn = (data: D): Promise<RTN> => {
       if (this.bound !== true) {
         console.warn('Not bind to a store yet!');
       }

@@ -74,14 +74,17 @@ describe('action()', () => {
 
     const module     = new TypedModule(store, 'ut', state);
     const utMutation = module.mutation<number>('UT_MUTATION', (s, p) => { s.count += p.data; });
-    const utAction   = module.action<number>('UT_ACTION', async(s, p) => {
+    const utAction   = module.action<number, string>('UT_ACTION', (s, p) => {
       utMutation(p.data);
+      return 'return value';
     });
 
     module.finish();
 
-    await utAction(333);
-
+    const result = utAction(333);
+    expect(result instanceof Promise).toBeTruthy();
+    expect(typeof result.then === 'function').toBeTruthy();
+    expect(await result).toBe('return value');
     expect(store.state.ut.count).toBe(333);
     expect(utAction.key).toBe('UT_ACTION');
     expect(utAction.fullKey).toBe('ut/UT_ACTION');
@@ -101,7 +104,7 @@ describe('action()', () => {
 
     const module     = new TypedModule(store, 'ut', state);
     const utMutation = module.mutation<void>('UT_MUTATION', s => { s.count += 1; });
-    const utAction   = module.action<void>('UT_ACTION', async s => {
+    const utAction   = module.action('UT_ACTION', async s => {
       utMutation();
     });
 
