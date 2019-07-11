@@ -260,3 +260,34 @@ describe('if use state directly?', () => {
     expect(wrapper.html()).toBe('<div>200|200</div>');
   });
 });
+
+describe('nested modules', () => {
+
+  it('should allow nested module', () => {
+    interface S {
+      count: number;
+    }
+
+    interface R {
+      ut: {
+        nested: S;
+      };
+    }
+
+    const state: S = { count: 0 };
+    const store    = new Store<R>({});
+
+    const utModule     = new TypedModule(store, 'ut', {});
+    utModule.finish();
+
+    const nestedModule = new TypedModule(utModule, 'nested', state);
+    const itShouldWork = nestedModule.mutation<number>('IT_SHOULD_WORK', (s, p) => { s.count = p.data; });
+    nestedModule.finish();
+
+    itShouldWork(222);
+
+    expect(store.state.ut.nested.count).toBe(222);
+    expect(itShouldWork.key).toBe('IT_SHOULD_WORK');
+    expect(itShouldWork.fullKey).toBe('ut/nested/IT_SHOULD_WORK');
+  });
+});
