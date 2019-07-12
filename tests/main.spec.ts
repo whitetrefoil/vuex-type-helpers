@@ -280,7 +280,7 @@ describe('nested modules', () => {
     const state: S = { count: 0 };
     const store    = new Store<R>({});
 
-    const utModule     = new TypedModule(store, 'ut', {});
+    const utModule = new TypedModule(store, 'ut', {});
     utModule.finish();
 
     const nestedModule = new TypedModule(utModule, 'nested', state);
@@ -292,5 +292,43 @@ describe('nested modules', () => {
     expect(store.state.ut.nested.count).toBe(222);
     expect(itShouldWork.key).toBe('IT_SHOULD_WORK');
     expect(itShouldWork.fullKey).toBe('ut/nested/IT_SHOULD_WORK');
+  });
+});
+
+describe('testability', () => {
+
+  it('should support mutations', () => {
+    interface S {
+      count: number;
+    }
+
+    interface R {
+      ut: S;
+    }
+
+    const state: S = { count: 0 };
+    const store    = new Store<R>({});
+
+    const module = new TypedModule(store, 'ut', state);
+
+    const itShouldWork = module.mutation<number>('IT_SHOULD_WORK', (s, p) => { s.count = p.data; });
+
+    module.finish();
+
+    const testState: S = { count: 100 };
+    itShouldWork.vfn(testState, { type: itShouldWork.fullKey, data: 22 });
+    expect(testState.count).toBe(122);
+  });
+
+  it('should support actions', () => {
+
+  });
+
+  it('should support getters', () => {
+
+  });
+
+  it('should support mGetters', () => {
+
   });
 });

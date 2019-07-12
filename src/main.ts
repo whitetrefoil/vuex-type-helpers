@@ -15,9 +15,10 @@ export interface VuexMutation<S, D> {
   (state: S, payload: StandardPayload<D>): void;
 }
 
-export interface BoundMutation<D> {
+export interface BoundMutation<S, D> {
   key: string;
   fullKey: string;
+  vfn: VuexMutation<S, D>;
   (data: D): void;
 }
 
@@ -25,9 +26,10 @@ export interface VuexAction<S, R, D, RTN> {
   (ctx: ActionContext<S, R>, payload: StandardPayload<D>): RTN|Promise<RTN>;
 }
 
-export interface BoundAction<D, RTN> {
+export interface BoundAction<S, R, D, RTN> {
   key: string;
   fullKey: string;
+  vfn: VuexAction<S, R, D, RTN>;
   (data: D): Promise<RTN>;
 }
 
@@ -35,15 +37,17 @@ export interface VuexGetter<S, R, D> {
   (state: S, getters: any, rootState: R, rootGetters: any): D;
 }
 
-export interface BoundGetter<D> {
+export interface BoundGetter<S, R, D> {
   key: string;
   fullKey: string;
+  vfn: VuexGetter<S, R, D>;
   (): D;
 }
 
-export interface BoundMethodGetter<D, P> {
+export interface BoundMethodGetter<S, R, D, P> {
   key: string;
   fullKey: string;
+  vfn: VuexGetter<S, R, (arg: P) => D>;
   (arg: P): D;
 }
 
@@ -81,7 +85,7 @@ export class TypedModule<S, R> {
     };
   }
 
-  mutation<D = void>(key: string, vfn: VuexMutation<S, D>): BoundMutation<D> {
+  mutation<D = void>(key: string, vfn: VuexMutation<S, D>): BoundMutation<S, D> {
     this.mutationTree[key] = vfn;
     const fullKey          = `${this.fullName}/${key}`;
 
@@ -97,11 +101,12 @@ export class TypedModule<S, R> {
 
     fn.key     = key;
     fn.fullKey = fullKey;
+    fn.vfn     = vfn;
 
     return fn;
   }
 
-  action<D = void, RTN = any>(key: string, vfn: VuexAction<S, R, D, RTN>): BoundAction<D, RTN> {
+  action<D = void, RTN = any>(key: string, vfn: VuexAction<S, R, D, RTN>): BoundAction<S, R, D, RTN> {
     this.actionTree[key] = vfn;
     const fullKey        = `${this.fullName}/${key}`;
 
@@ -117,11 +122,12 @@ export class TypedModule<S, R> {
 
     fn.key     = key;
     fn.fullKey = fullKey;
+    fn.vfn     = vfn;
 
     return fn;
   }
 
-  getter<D>(key: string, vfn: VuexGetter<S, R, D>): BoundGetter<D> {
+  getter<D>(key: string, vfn: VuexGetter<S, R, D>): BoundGetter<S, R, D> {
     this.getterTree[key] = vfn;
     const fullKey        = `${this.fullName}/${key}`;
 
@@ -129,11 +135,12 @@ export class TypedModule<S, R> {
 
     fn.key     = key;
     fn.fullKey = fullKey;
+    fn.vfn     = vfn;
 
     return fn;
   }
 
-  mGetter<D, P>(key: string, vfn: VuexGetter<S, R, (arg: P) => D>): BoundMethodGetter<D, P> {
+  mGetter<D, P>(key: string, vfn: VuexGetter<S, R, (arg: P) => D>): BoundMethodGetter<S, R, D, P> {
     this.getterTree[key] = vfn;
     const fullKey        = `${this.fullName}/${key}`;
 
@@ -141,6 +148,7 @@ export class TypedModule<S, R> {
 
     fn.key     = key;
     fn.fullKey = fullKey;
+    fn.vfn     = vfn;
 
     return fn;
   }
